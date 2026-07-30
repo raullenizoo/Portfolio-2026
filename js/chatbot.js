@@ -1,27 +1,26 @@
 /* ==========================================================================
-   Portfolio Assistant — Gemini-powered chatbot
+   Portfolio Assistant — Groq-powered chatbot
    Scope-limited to portfolio topics (skills, projects, about, contact).
-   Uses the Gemini API (model: gemini-3.6-flash) directly from the browser.
+   Uses Groq's OpenAI-compatible Chat Completions API directly from the
+   browser (model: llama-3.3-70b-versatile).
 
    This version uses a built-in fallback key so visitors do not need to
    paste an API key manually. A saved custom key can still be used if one
    is present in localStorage.
 
-   When the daily quota is exceeded (HTTP 429 / RESOURCE_EXHAUSTED), the
-   widget shows an "Unable to respond" bubble and disables the input so
-   the page stops sending further requests for the rest of the session.
+   When the daily quota / rate limit is exceeded (HTTP 429), the widget
+   shows an "Unable to respond" bubble and disables the input so the
+   page stops sending further requests for the rest of the session.
    ========================================================================== */
 
 (function () {
   "use strict";
 
-  var GEMINI_MODEL = "gemini-3.6-flash";
-  var GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent";
-  var STORAGE_KEY = "portfolio-gemini-key";
-  /*
-  var DEFAULT_API_KEY = "AQ.Ab8RN6IyHN1d7dyMVeJATfkrXBZEYBjMgpsRKV62YCscP79RLQ";
-  */
-  var DEFAULT_API_KEY ="AQ.Ab8RN6KuiCuIvSyU0TOplUa-YVsuJC79WsiYTsY_i-vb0TkK_g";
+  var GROQ_MODEL = "llama-3.3-70b-versatile";
+  var GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+  var STORAGE_KEY = "portfolio-groq-key";
+  // Groq API keys are issued from console.groq.com and start with "gsk_".
+  var DEFAULT_API_KEY = "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";
   var MAX_OUTPUT_TOKENS = 600;
   var MAX_REPLY_CHARS = 1000;
   var MAX_HISTORY_TURNS = 5;
@@ -92,24 +91,24 @@
     return text;
   }
 
-  function buildContents(userText) {
-    var contents = [];
+  // Groq's Chat Completions API is OpenAI-compatible: a single flat
+  // "messages" array with role "system" | "user" | "assistant".
+  function buildMessages(userText) {
+    var messages = [{ role: "system", content: SYSTEM_INSTRUCTION }];
     var recent = history.slice(-MAX_HISTORY_TURNS * 2);
     recent.forEach(function (turn) {
-      contents.push({ role: turn.role, parts: [{ text: turn.text }] });
+      messages.push({ role: turn.role, content: turn.text });
     });
-    contents.push({ role: "user", parts: [{ text: userText }] });
-    return contents;
+    messages.push({ role: "user", content: userText });
+    return messages;
   }
 
   function buildRequestBody(userText) {
     return {
-      systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-      contents: buildContents(userText),
-      generationConfig: {
-        maxOutputTokens: MAX_OUTPUT_TOKENS,
-        temperature: 0.2
-      }
+      model: GROQ_MODEL,
+      messages: buildMessages(userText),
+      max_completion_tokens: MAX_OUTPUT_TOKENS,
+      temperature: 0.2
     };
   }
 
@@ -123,12 +122,15 @@
     if (elSubmitBtn) elSubmitBtn.disabled = true;
   }
 
-  function askGemini(userText) {
+  function askGroq(userText) {
     var body = buildRequestBody(userText);
 
-    return fetch(GEMINI_ENDPOINT + "?key=" + encodeURIComponent(apiKey), {
+    return fetch(GROQ_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + apiKey
+      },
       body: JSON.stringify(body)
     }).then(function (res) {
       if (!res.ok) {
@@ -137,20 +139,19 @@
           var msg = (apiError && apiError.message) || ("Request failed (" + res.status + ")");
           var err = new Error(msg);
           err.status = res.status;
-          // Gemini reports quota/rate-limit exhaustion as HTTP 429 with
-          // status "RESOURCE_EXHAUSTED".
-          err.isQuotaExceeded = res.status === 429 || (apiError && apiError.status === "RESOURCE_EXHAUSTED");
+          // Groq's OpenAI-compatible API reports rate-limit/quota
+          // exhaustion as HTTP 429 (error.type is typically
+          // "rate_limit_exceeded" or similar).
+          err.isQuotaExceeded = res.status === 429;
           throw err;
         });
       }
       return res.json();
     }).then(function (data) {
-      var candidate = data && data.candidates && data.candidates[0];
-      var parts = candidate && candidate.content && candidate.content.parts;
-      var text = (parts && parts.map(function (p) { return p.text || ""; }).join("").trim()) || "";
+      var choice = data && data.choices && data.choices[0];
+      var text = ((choice && choice.message && choice.message.content) || "").trim();
       if (!text) {
-        var emptyErr = new Error("No response from the assistant. Try rephrasing your question.");
-        throw emptyErr;
+        throw new Error("No response from the assistant. Try rephrasing your question.");
       }
       return truncateReply(text);
     });
@@ -171,10 +172,10 @@
 
     var typingEl = addTypingIndicator();
 
-    askGemini(text).then(function (reply) {
+    askGroq(text).then(function (reply) {
       typingEl.remove();
       addMessage(reply, "bot");
-      history.push({ role: "model", text: reply });
+      history.push({ role: "assistant", text: reply });
       elInput.disabled = false;
       if (elSubmitBtn) elSubmitBtn.disabled = false;
       elInput.focus();
@@ -242,72 +243,3 @@
 
   document.addEventListener("DOMContentLoaded", init);
 })();
-      history.push({ role: "model", text: reply });
-      elInput.disabled = false;
-      if (elSubmitBtn) elSubmitBtn.disabled = false;
-      elInput.focus();
-    }).catch(function (err) {
-      typingEl.remove();
-      if (err && err.isQuotaExceeded) {
-        addMessage(QUOTA_MESSAGE, "bot");
-        disableChatInput(QUOTA_PLACEHOLDER);
-      } else {
-        addMessage("Sorry, something went wrong: " + err.message, "bot");
-        elInput.disabled = false;
-        if (elSubmitBtn) elSubmitBtn.disabled = false;
-        elInput.focus();
-      }
-    });
-  }
-
-  function handleSaveKey() {
-    var value = elKeyInput.value.trim();
-    if (!value) return;
-    apiKey = value;
-    storeKey(value);
-    elKeyBar.classList.add("d-none");
-    elKeyInput.value = "";
-
-    // A fresh/custom key means the previous quota lockout no longer
-    // applies, so re-enable the chat.
-    if (chatDisabled) {
-      chatDisabled = false;
-      elInput.disabled = false;
-      elInput.placeholder = "";
-      if (elSubmitBtn) elSubmitBtn.disabled = false;
-    }
-  }
-
-  function init() {
-    elWidget = document.getElementById("chatWidget");
-    if (!elWidget) return;
-    elToggle = document.getElementById("chatToggle");
-    elPanel = document.getElementById("chatPanel");
-    elClose = document.getElementById("chatClose");
-    elMessages = document.getElementById("chatMessages");
-    elForm = document.getElementById("chatForm");
-    elInput = document.getElementById("chatInput");
-    elSubmitBtn = elForm ? elForm.querySelector('button[type="submit"]') : null;
-    elKeyBar = document.getElementById("chatKeyBar");
-    elKeyInput = document.getElementById("chatApiKey");
-    elKeySave = document.getElementById("chatKeySave");
-
-    apiKey = getStoredKey() || DEFAULT_API_KEY;
-    if (elKeyBar) elKeyBar.classList.add("d-none");
-
-    elToggle.addEventListener("click", function () {
-      var isOpen = elWidget.classList.contains("chat-open");
-      if (isOpen) { closePanel(); } else { openPanel(); }
-    });
-    elClose.addEventListener("click", closePanel);
-    elForm.addEventListener("submit", handleSend);
-    if (elKeySave) elKeySave.addEventListener("click", handleSaveKey);
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && elWidget.classList.contains("chat-open")) closePanel();
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", init);
-})();
-      
