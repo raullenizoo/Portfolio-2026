@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raul Lenizo — Aspiring Web Developer</title>
+  <meta name="description" content="Portfolio of Raul Lenizo, aspiring web developer specializing in JavaScript, PHP and MySQL.">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="shortcut icon" href="assets/icons/favicon.svg">
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="#home">
+        <span class="brand-bracket">&lt;</span>Raul<span class="brand-accent">.</span>Lenizo<span class="brand-bracket">/&gt;</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item"><a class="nav-link" href="#home" data-section="home">home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills" data-section="skills">skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects" data-section="projects">projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about" data-section="about">about</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact" data-section="contact">contact</a></li>
+          <li class="nav-item ms-lg-2">
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle light and dark theme" aria-pressed="false">
+              <i class="bi bi-moon-stars-fill theme-icon-dark"></i>
+              <i class="bi bi-sun-fill theme-icon-light"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HOME / HERO ===== -->
+  <header id="home" class="hero-section">
+    <div class="container">
+      <div class="row align-items-center gy-5">
+        <div class="col-lg-7">
+          <p class="eyebrow reveal">// welcome</p>
+          <div class="editor-window reveal">
+            <div class="editor-titlebar">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+              <span class="editor-filename">about-me.js</span>
+            </div>
+            <div class="editor-body">
+              <pre><code><span class="tok-key">const</span> <span class="tok-var">developer</span> = {
+  <span class="tok-prop">name</span>: <span class="tok-str">"Raul Lenizo"</span>,
+  <span class="tok-prop">title</span>: <span class="tok-str">"<span id="typedTitle"></span><span class="caret">|</span>"</span>,
+  <span class="tok-prop">focus</span>: [<span class="tok-str">"JavaScript"</span>, <span class="tok-str">"PHP"</span>, <span class="tok-str">"MySQL"</span>],
+  <span class="tok-prop">basedIn</span>: <span class="tok-str">"Remote / GMT+8"</span>,
+};</code></pre>
+            </div>
+          </div>
+          <p class="hero-copy reveal">
+            I build fast, accessible web applications from database to browser —
+            clean APIs, thoughtful interfaces, and interfaces that don't get in the way.
+          </p>
+          <div class="hero-actions reveal">
+            <a href="#projects" class="btn btn-primary-custom">View Projects</a>
+            <a href="#contact" class="btn btn-outline-custom">Contact Me</a>
+          </div>
+        </div>
+        <div class="col-lg-5 text-center">
+          <div class="portrait-frame reveal">
+            <img src="assets/images/hero.png" alt="Illustrated portrait of Raul Lenizo" class="portrait-img" width="360" height="360" loading="lazy">
+            <span class="portrait-tag">status: <span class="status-dot"></span> available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="scroll-indicator" id="scrollIndicator" aria-label="Scroll to skills section">
+      <span class="scroll-line"></span>
+      <i class="bi bi-chevron-down"></i>
+    </button>
+  </header>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" class="section">
+    <div class="container">
+      <p class="eyebrow reveal">// skills</p>
+      <h2 class="section-title reveal">What I work with</h2>
+      <p class="section-subtitle reveal">Tools and technologies I reach for daily, grouped by where they sit in the stack.</p>
+
+      <div class="skills-grid">
+
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><i class="bi bi-window"></i> Frontend</h3>
+          <div class="skill-chips">
+            <div class="skill-chip"><i class="bi bi-filetype-html"></i><span>HTML5</span></div>
+            <div class="skill-chip"><i class="bi bi-filetype-css"></i><span>CSS3</span></div>
+            <div class="skill-chip"><i class="bi bi-bootstrap-fill"></i><span>Bootstrap 5</span></div>
+            <div class="skill-chip"><i class="bi bi-filetype-js"></i><span>JavaScript</span></div>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><i class="bi bi-server"></i> Backend</h3>
+          <div class="skill-chips">
+            <div class="skill-chip"><i class="bi bi-filetype-php"></i><span>PHP</span></div>
+            <div class="skill-chip"><i class="bi bi-braces"></i><span>REST APIs</span></div>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><i class="bi bi-database"></i> Database</h3>
+          <div class="skill-chips">
+            <div class="skill-chip"><i class="bi bi-database-fill"></i><span>MySQL</span></div>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><i class="bi bi-tools"></i> Tools</h3>
+          <div class="skill-chips">
+            <div class="skill-chip"><i class="bi bi-git"></i><span>Git</span></div>
+            <div class="skill-chip"><i class="bi bi-github"></i><span>GitHub</span></div>
+            <div class="skill-chip"><i class="bi bi-code-square"></i><span>VS Code</span></div>
+          </div>
+        </div>
+
+        <div class="skill-group reveal">
+          <h3 class="skill-group-title"><i class="bi bi-stars"></i> Other</h3>
+          <div class="skill-chips">
+            <div class="skill-chip"><i class="bi bi-palette"></i><span>Figma</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects" class="section section-alt">
+    <div class="container">
+      <p class="eyebrow reveal">// projects</p>
+      <h2 class="section-title reveal">Selected work</h2>
+      <p class="section-subtitle reveal">A few projects that show how I approach product, data and interface together.</p>
+
+      <div class="project-filters reveal" role="tablist" aria-label="Filter projects by category">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="web">Web Apps</button>
+      </div>
+
+      <div class="row g-4" id="projectGrid">
+
+        <div class="col-md-6 col-lg-4 project-item reveal" data-category="web">
+          <div class="project-card">
+            <div class="project-img-wrap">
+              <img src="assets/images/attendify.png" alt="Dashboard interface preview" loading="lazy">
+            </div>
+            <div class="project-body">
+              <h3>Attendify — Attendance App</h3>
+              <p>Smart and efficient solution for managing attendance tracking.</p>
+              <div class="tech-tags">
+                <span>PHP</span><span>MySQL</span><span>JS</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="link-demo"><i class="bi bi-box-arrow-up-right"></i> Live Demo</a>
+                <a href="#" class="link-code"><i class="bi bi-github"></i> Code</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ME ===== -->
+  <section id="about" class="section">
+    <div class="container">
+      <p class="eyebrow reveal">// about</p>
+      <h2 class="section-title reveal">A bit about me</h2>
+
+      <div class="row align-items-start gy-5 mt-2">
+        <div class="col-lg-5">
+          <div class="about-photo-frame reveal">
+            <img src="assets/images/about.jpg" alt="Illustrated portrait of Raul Lenizo" loading="lazy">
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="about-block reveal">
+            <h3><i class="bi bi-person-lines-fill"></i> Biography</h3>
+            <p>I'm a Aspiring Web Developer who enjoys the whole path from a database schema to the pixel on screen. I like small, well-run projects where I can own a feature end to end.</p>
+          </div>
+          <div class="about-block reveal">
+            <h3><i class="bi bi-bullseye"></i> Career Objective</h3>
+            <p>Looking to join a product team where I can build reliable backend systems and pair them with interfaces people actually enjoy using.</p>
+          </div>
+          <div class="row g-4">
+            <div class="col-sm-6">
+              <div class="about-block reveal">
+                <h3><i class="bi bi-mortarboard"></i> Education</h3>
+                <p class="mb-1 fw-medium">B.Sc. Information Technology</p>
+                <p class="text-muted-custom small">Professional Academy Of The Philippines, 2024-Present</p>
+              </div>
+            </div>
+          </div>
+          <div class="about-block reveal">
+            <h3><i class="bi bi-controller"></i> Interests</h3>
+            <p>Chess, mechanical keyboards, weekend hiking, and tinkering with small home-automation scripts.</p>
+          </div>
+          <a href="#" class="btn btn-outline-custom mt-2 reveal"><i class="bi bi-download"></i> Download Resume</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="section section-alt">
+    <div class="container">
+      <p class="eyebrow reveal">// contact</p>
+      <h2 class="section-title reveal">Let's build something</h2>
+      <p class="section-subtitle reveal">Have a project in mind, or just want to say hi? My inbox is open.</p>
+
+      <div class="row g-5 mt-2">
+        <div class="col-lg-5">
+          <div class="contact-info-item reveal">
+            <i class="bi bi-envelope-fill"></i>
+            <div>
+              <span class="label">Email</span>
+              <a href="mailto:lenizoraul99@gmail.com">lenizoraul99@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-info-item reveal">
+            <i class="bi bi-telephone-fill"></i>
+            <div>
+              <span class="label">Phone</span>
+              <a href="tel:09621465110">09621465110</a>
+            </div>
+          </div>
+          <div class="contact-info-item reveal">
+            <i class="bi bi-geo-alt-fill"></i>
+            <div>
+              <span class="label">Address</span>
+              <span>Remote · GMT+8</span>
+            </div>
+          </div>
+          <div class="social-icons reveal">
+            <a href="https://github.com/raullenizoo" aria-label="GitHub"><i class="bi bi-github"></i></a>
+            <a href="https://linkedin.com/in/raul-lenizo" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="https://x.com/__ralz__" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <form id="contactForm" class="contact-form reveal" novalidate>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label for="fName" class="form-label">Name</label>
+                <input type="text" class="form-control custom-input" id="fName" name="name" required>
+                <div class="invalid-feedback">Please enter your name.</div>
+              </div>
+              <div class="col-sm-6">
+                <label for="fEmail" class="form-label">Email</label>
+                <input type="email" class="form-control custom-input" id="fEmail" name="email" required>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+              </div>
+              <div class="col-12">
+                <label for="fSubject" class="form-label">Subject</label>
+                <input type="text" class="form-control custom-input" id="fSubject" name="subject" required>
+                <div class="invalid-feedback">Please enter a subject.</div>
+              </div>
+              <div class="col-12">
+                <label for="fMessage" class="form-label">Message</label>
+                <textarea class="form-control custom-input" id="fMessage" name="message" rows="5" required></textarea>
+                <div class="invalid-feedback">Please enter a message.</div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary-custom w-100 w-sm-auto">
+                  Send Message <i class="bi bi-send-fill"></i>
+                </button>
+              </div>
+              <div class="col-12">
+                <div id="formSuccess" class="form-alert form-alert-success d-none" role="status">
+                  <i class="bi bi-check-circle-fill"></i> Message sent — I'll get back to you soon.
+                </div>
+                <div id="formError" class="form-alert form-alert-error d-none" role="alert">
+                  <i class="bi bi-exclamation-triangle-fill"></i> Please fix the highlighted fields above.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p class="footer-brand"><span class="brand-bracket">&lt;</span>Raul.Lenizo<span class="brand-bracket">/&gt;</span></p>
+        <p class="footer-copy">&copy; <span id="currentYear"></span> Raul Lenizo. All rights reserved.</p>
+      </div>
+    </div>
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+      <i class="bi bi-arrow-up"></i>
+    </button>
+  </footer>
+
+  <!-- ===== CHATBOT ===== -->
+  <div id="chatWidget" class="chat-widget">
+    <button id="chatToggle" class="chat-toggle-btn" aria-label="Open portfolio assistant" aria-expanded="false">
+      <i class="bi bi-chat-dots-fill chat-icon-open"></i>
+      <i class="bi bi-x-lg chat-icon-close"></i>
+    </button>
+
+    <div id="chatPanel" class="chat-panel" role="dialog" aria-label="Portfolio assistant chat" aria-hidden="true">
+      <div class="chat-panel-header">
+        <div class="chat-panel-title">
+          <span class="chat-avatar"><i class="bi bi-code-slash"></i></span>
+          <div>
+            <p class="chat-name">Portfolio Assistant</p>
+            <p class="chat-status"><span class="status-dot"></span> ask me about Raul's work</p>
+          </div>
+        </div>
+        <button id="chatClose" class="chat-close-btn" aria-label="Close chat"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <div id="chatKeyBar" class="chat-key-bar d-none">
+        <p class="chat-key-hint">
+          <i class="bi bi-key-fill"></i>
+          Add a Gemini API key to enable the assistant. Get one free at
+          <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>.
+        </p>
+        <div class="chat-key-input-row">
+          <input type="password" id="chatApiKey" class="custom-input chat-key-input" placeholder="Paste your Gemini API key">
+          <button id="chatKeySave" class="btn btn-primary-custom chat-key-save">Save</button>
+        </div>
+        <p class="chat-key-note">Stored only in your browser (localStorage). Never sent anywhere but Google's API.</p>
+      </div>
+
+      <div id="chatMessages" class="chat-messages">
+        <div class="chat-msg chat-msg-bot">
+          <p>Hey! I'm Raul's portfolio assistant. Ask me about his skills, projects, experience, or how to get in touch — I keep to portfolio topics only.</p>
+        </div>
+      </div>
+
+      <form id="chatForm" class="chat-input-row" autocomplete="off">
+        <input type="text" id="chatInput" class="custom-input chat-input" placeholder="Ask about a project, skill…" maxlength="300" required>
+        <button type="submit" class="chat-send-btn" aria-label="Send message"><i class="bi bi-send-fill"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
