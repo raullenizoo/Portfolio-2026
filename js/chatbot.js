@@ -21,7 +21,7 @@
   /*
   var DEFAULT_API_KEY = "AQ.Ab8RN6IyHN1d7dyMVeJATfkrXBZEYBjMgpsRKV62YCscP79RLQ";
   */
-  var DEFAULT_API_KEY ="AQ.Ab8RN6J3KJhu0hNJfI8JW7y3cwsiDzbdNEKdPLVpnSZxdG9QHw";
+  var DEFAULT_API_KEY ="AQ.Ab8RN6KuiCuIvSyU0TOplUa-YVsuJC79WsiYTsY_i-vb0TkK_g";
   var MAX_OUTPUT_TOKENS = 600;
   var MAX_REPLY_CHARS = 1000;
   var MAX_HISTORY_TURNS = 5;
@@ -174,6 +174,74 @@
     askGemini(text).then(function (reply) {
       typingEl.remove();
       addMessage(reply, "bot");
+      history.push({ role: "model", text: reply });
+      elInput.disabled = false;
+      if (elSubmitBtn) elSubmitBtn.disabled = false;
+      elInput.focus();
+    }).catch(function (err) {
+      typingEl.remove();
+      if (err && err.isQuotaExceeded) {
+        addMessage(QUOTA_MESSAGE, "bot");
+        disableChatInput(QUOTA_PLACEHOLDER);
+      } else {
+        addMessage("Sorry, something went wrong: " + err.message, "bot");
+        elInput.disabled = false;
+        if (elSubmitBtn) elSubmitBtn.disabled = false;
+        elInput.focus();
+      }
+    });
+  }
+
+  function handleSaveKey() {
+    var value = elKeyInput.value.trim();
+    if (!value) return;
+    apiKey = value;
+    storeKey(value);
+    elKeyBar.classList.add("d-none");
+    elKeyInput.value = "";
+
+    // A fresh/custom key means the previous quota lockout no longer
+    // applies, so re-enable the chat.
+    if (chatDisabled) {
+      chatDisabled = false;
+      elInput.disabled = false;
+      elInput.placeholder = "";
+      if (elSubmitBtn) elSubmitBtn.disabled = false;
+    }
+  }
+
+  function init() {
+    elWidget = document.getElementById("chatWidget");
+    if (!elWidget) return;
+    elToggle = document.getElementById("chatToggle");
+    elPanel = document.getElementById("chatPanel");
+    elClose = document.getElementById("chatClose");
+    elMessages = document.getElementById("chatMessages");
+    elForm = document.getElementById("chatForm");
+    elInput = document.getElementById("chatInput");
+    elSubmitBtn = elForm ? elForm.querySelector('button[type="submit"]') : null;
+    elKeyBar = document.getElementById("chatKeyBar");
+    elKeyInput = document.getElementById("chatApiKey");
+    elKeySave = document.getElementById("chatKeySave");
+
+    apiKey = getStoredKey() || DEFAULT_API_KEY;
+    if (elKeyBar) elKeyBar.classList.add("d-none");
+
+    elToggle.addEventListener("click", function () {
+      var isOpen = elWidget.classList.contains("chat-open");
+      if (isOpen) { closePanel(); } else { openPanel(); }
+    });
+    elClose.addEventListener("click", closePanel);
+    elForm.addEventListener("submit", handleSend);
+    if (elKeySave) elKeySave.addEventListener("click", handleSaveKey);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && elWidget.classList.contains("chat-open")) closePanel();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
       history.push({ role: "model", text: reply });
       elInput.disabled = false;
       if (elSubmitBtn) elSubmitBtn.disabled = false;
